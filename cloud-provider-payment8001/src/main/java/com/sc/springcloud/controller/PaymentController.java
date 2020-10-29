@@ -1,5 +1,6 @@
 package com.sc.springcloud.controller;
 
+
 import com.sc.springcloud.entity.CommonResult;
 import com.sc.springcloud.entity.Payment;
 import com.sc.springcloud.service.PaymentService;
@@ -39,9 +40,9 @@ public class PaymentController {
     @GetMapping(value = "/payment/get/{id}")
     public CommonResult<Payment> getPaymentById(@PathVariable("id") Long id) {
         Payment payment = paymentService.getPaymentById(id);
-
+        log.info("test1");
         if (payment != null) {
-            return new CommonResult<>(200, "查询成功,serverPort:  " + serverPort, payment);
+            return new CommonResult<>(200, "查询成1功,serverPort:  " + serverPort, payment);
         } else {
             return new CommonResult<>(444, "没有对应记录,查询ID: " + id, null);
         }
