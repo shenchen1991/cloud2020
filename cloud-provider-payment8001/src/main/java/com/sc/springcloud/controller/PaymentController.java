@@ -6,9 +6,13 @@ import com.sc.springcloud.entity.Payment;
 import com.sc.springcloud.service.PaymentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author 沈陈
@@ -22,8 +26,8 @@ public class PaymentController {
     @Value("${server.port}")
     private String serverPort;
 
-//    @Resource
-//    private DiscoveryClient discoveryClient;
+    @Resource
+    private DiscoveryClient discoveryClient;
 
     @PostMapping(value = "/payment/create")
     public CommonResult<Integer> create(@RequestBody Payment payment) {
@@ -46,6 +50,30 @@ public class PaymentController {
         } else {
             return new CommonResult<>(444, "没有对应记录,查询ID: " + id, null);
         }
+    }
+
+    @GetMapping(value = "/payment/discovery")
+    public Object discovery() {
+        List<String> services = discoveryClient.getServices();
+        for (String element : services) {
+            log.info("****element:" + element);
+        }
+        List<ServiceInstance> serviceInstanceList = discoveryClient.getInstances("CLOUD-PAYMENT-SERVICE");
+        for (ServiceInstance serviceInstance : serviceInstanceList) {
+            log.info(serviceInstance.getServiceId() + "\t" + serviceInstance.getHost() + "\t" + serviceInstance.getPort() + "\t" + serviceInstance.getUri());
+        }
+        return this.discoveryClient;
+    }
+
+
+    @GetMapping(value = "/payment/timeout")
+    public String paymentTimeout() {
+        try {
+            TimeUnit.SECONDS.sleep(3);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return serverPort;
     }
 
 }
