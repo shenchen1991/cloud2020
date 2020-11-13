@@ -52,6 +52,11 @@ public class PaymentController {
         }
     }
 
+    @GetMapping(value = "/payment/lb")
+    public String  getPaymentLb() {
+        return serverPort;
+    }
+
     @GetMapping(value = "/payment/discovery")
     public Object discovery() {
         List<String> services = discoveryClient.getServices();
@@ -74,6 +79,12 @@ public class PaymentController {
             e.printStackTrace();
         }
         return serverPort;
+    }
+
+    @GetMapping("/payment/zipkin")
+    public String paymentZipkin()
+    {
+        return "hi ,i'am paymentzipkin server fall back，welcome to atguigu，O(∩_∩)O哈哈~";
     }
 
 }

@@ -49,6 +49,11 @@ public class PaymentController {
         }
     }
 
+    @GetMapping(value = "/payment/lb")
+    public String  getPaymentLb() {
+        return serverPort;
+    }
+
     @GetMapping(value = "/payment/timeout")
     public String paymentTimeout() {
         try {

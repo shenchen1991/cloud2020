@@ -4,6 +4,11 @@ server:
 spring:
   application:
     name: cloud-order-service
+  zipkin:
+    base-url: http://120.55.37.36:9411
+  sleuth:
+    sampler:
+      probability: 1
 
 eureka:
   client:
